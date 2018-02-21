@@ -48,49 +48,6 @@ public class ActValidation extends AppCompatActivity {
     }
 
 
-    // Checks key availability in internal storage
-    private boolean keyExists() {
-        File file = new File(getFilesDir() + "/key");
-        return file.exists();
-    }
-
-    // Saves the key to the internal storage
-    private void setKey(String key) {
-        String filename = "key";
-        try {
-            FileOutputStream fos = openFileOutput(filename, MODE_PRIVATE);
-            fos.write(key.getBytes());
-            fos.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    // Reads the key from a file in internal storage
-    private String getKey() {
-        String result = "";
-        String value;
-
-        try {
-            FileInputStream fileInputStream = openFileInput("key");
-            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            StringBuilder stringBuffer = new StringBuilder();
-
-            try{
-                while ((value = bufferedReader.readLine()) != null) stringBuffer.append(value);
-                result = stringBuffer.toString();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        return result;
-    }
-
-
     /**
      * Checks the validity of the key by sending it to the web server and checking whether it exists
      * or not in the database.
@@ -144,8 +101,8 @@ public class ActValidation extends AppCompatActivity {
     private void validationFailed() {
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle("Terjadi kesalahan");
-        alert.setMessage("Terjadi kesalahan saat memvalidasi key. Pastikan key anda telah terdaftar," +
-                " dan scan kembali QR code yang Anda dapat dari website.");
+        alert.setMessage("Pastikan Anda telah mengisi form pendaftaran pada website," +
+                " dan scan kembali QR code yang Anda dapatkan.");
         alert.setCancelable(false);
         alert.setNeutralButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface d, int i) {
@@ -170,5 +127,46 @@ public class ActValidation extends AppCompatActivity {
         this.finish();
     }
 
+    // Checks key availability in internal storage
+    private boolean keyExists() {
+        File file = new File(getFilesDir() + "/key");
+        return file.exists();
+    }
+
+    // Saves the key to the internal storage
+    private void setKey(String key) {
+        String filename = "key";
+        try {
+            FileOutputStream fos = openFileOutput(filename, MODE_PRIVATE);
+            fos.write(key.getBytes());
+            fos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Reads the key from a file in internal storage
+    private String getKey() {
+        String result = "";
+        String value;
+
+        try {
+            FileInputStream fileInputStream = openFileInput("key");
+            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            StringBuilder stringBuffer = new StringBuilder();
+
+            try{
+                while ((value = bufferedReader.readLine()) != null) stringBuffer.append(value);
+                result = stringBuffer.toString();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
 
 }

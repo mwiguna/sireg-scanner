@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -26,12 +27,15 @@ public class TokenSender extends AsyncTask<Void,Void,String> {
     private String urlAddress, token;
     @SuppressLint("StaticFieldLeak")
     private ProgressBar homeLoading;
+    @SuppressLint("StaticFieldLeak")
+    private View view;
 
-    TokenSender(Context c, String urlAddress, String token, ProgressBar homeLoading) {
+    TokenSender(Context c, String urlAddress, String token, ProgressBar homeLoading, View view) {
         this.c = c;
         this.urlAddress = urlAddress;
         this.token = token;
         this.homeLoading = homeLoading;
+        this.view = view;
     }
 
     @Override
@@ -50,7 +54,8 @@ public class TokenSender extends AsyncTask<Void,Void,String> {
         super.onPostExecute(response);
 
         homeLoading.setVisibility(View.INVISIBLE);
-        if(response == null) Toast.makeText(c,"Gagal. Mohon periksa koneksi internet Anda" ,Toast.LENGTH_SHORT).show();
+        if(response == null) Snackbar.make(view, "Gagal memvalidasi KTM. Pastikan koneksi internet" +
+                " Anda aktif.", Snackbar.LENGTH_LONG).show();
         else {
             Intent intent = new Intent(this.c, ActBarcode.class);
             this.c.startActivity(intent);

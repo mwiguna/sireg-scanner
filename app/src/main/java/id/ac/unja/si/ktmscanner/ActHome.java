@@ -7,12 +7,12 @@ import android.graphics.Typeface;
 import android.nfc.NdefMessage;
 import android.nfc.NfcAdapter;
 import android.os.Parcelable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class ActHome extends AppCompatActivity {
     NFC nfc = new NFC();
@@ -29,8 +29,8 @@ public class ActHome extends AppCompatActivity {
         welcomeText = findViewById(R.id.welcomeText);
         instruction = findViewById(R.id.instructionText);
         stepText = findViewById(R.id.stepText);
-        helvetica = Typeface.createFromAsset(getAssets(), "fonts/helvetica.ttf");
         homeLoading = findViewById(R.id.homeLoading);
+        helvetica = Typeface.createFromAsset(getAssets(), "fonts/helvetica.ttf");
 
         welcomeText.setTypeface(helvetica);
         instruction.setTypeface(helvetica);
@@ -42,20 +42,7 @@ public class ActHome extends AppCompatActivity {
         if(!nfc.checkNFCAvailability()) showNoNFCAlert();
     }
 
-    private void showNoNFCAlert() {
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle("Error");
-        alert.setMessage("NFC tidak tersedia. Jika perangkat Anda memiliki fitur NFC, mohon aktifkan" +
-                " di Connections -> NFC and payment");
-        alert.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface d, int i) {
-                finishAffinity();
-            }
-        });
-        alert.show();
-    }
 
-    // NFC HANDLING METHODS //
     @Override
     /*
       This method is executed every time a new card is detected.
@@ -66,11 +53,26 @@ public class ActHome extends AppCompatActivity {
 
         Parcelable[] parcelables = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
         if(parcelables != null && parcelables.length > 0) {
-            nfc.readTextFromMessage((NdefMessage)parcelables[0], homeLoading);
+            nfc.readTextFromMessage((NdefMessage)parcelables[0], homeLoading, findViewById(R.id.home_layout));
         }else{
-            Toast.makeText(this, "Data tidak tersedia", Toast.LENGTH_LONG).show();
+            Snackbar.make(findViewById(R.id.home_layout), "Data tidak tersedia. Pastikan KTM yang" +
+                    " anda gunakan adalah KTM Universitas X", Snackbar.LENGTH_LONG).show();
         }
     }
+
+    private void showNoNFCAlert() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle("Terjadi kesalahan");
+        alert.setMessage("Jika perangkat Anda memiliki fitur NFC, mohon aktifkan" +
+                " di Connections -> NFC and payment");
+        alert.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface d, int i) {
+                finishAffinity();
+            }
+        });
+        alert.show();
+    }
+
 
     @Override
     protected void onResume() {

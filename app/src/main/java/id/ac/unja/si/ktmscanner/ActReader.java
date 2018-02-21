@@ -33,8 +33,8 @@ public class ActReader extends AppCompatActivity {
 
     private void showNoNFCAlert() {
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle("Error");
-        alert.setMessage("NFC tidak tersedia. Jika perangkat Anda memiliki fitur NFC, mohon aktifkan" +
+        alert.setTitle("Terjadi kesalahan");
+        alert.setMessage("Jika perangkat Anda memiliki fitur NFC, mohon aktifkan" +
                 " di Connections -> NFC and payment");
         alert.setNeutralButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface d, int i) {
@@ -42,17 +42,6 @@ public class ActReader extends AppCompatActivity {
             }
         });
         alert.show();
-    }
-
-    private void deleteKey() {
-        File file = new File(getFilesDir() + "/key");
-        if (file.exists()) file.delete();
-    }
-
-    private void goToHomeActivity() {
-        Intent intent = new Intent(this, ActHome.class);
-        startActivity(intent);
-        this.finish();
     }
 
 
@@ -64,20 +53,16 @@ public class ActReader extends AppCompatActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
 
-
         Parcelable[] parcelables = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
         if(parcelables != null && parcelables.length > 0) {
-
-            nfc.readTextFromMessage((NdefMessage)parcelables[0], getKey());
+            nfc.readTextFromMessage((NdefMessage)parcelables[0], getKey(), findViewById(R.id.reader_layout));
         }else{
             Toast.makeText(this, "Data tidak tersedia", Toast.LENGTH_LONG).show();
         }
     }
 
 
-    /**
-     * Returns the string of the key that is stored in internal storage
-     */
+    // Get the key from a file in internal storage
     private String getKey() {
         String result = "";
         String value;
@@ -101,6 +86,17 @@ public class ActReader extends AppCompatActivity {
         return result;
     }
 
+    // Delete the key
+    private void deleteKey() {
+        File file = new File(getFilesDir() + "/key");
+        if (file.exists()) file.delete();
+    }
+
+    private void goToHomeActivity() {
+        Intent intent = new Intent(this, ActHome.class);
+        startActivity(intent);
+        this.finish();
+    }
 
     @Override
     protected void onResume() {

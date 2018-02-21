@@ -8,7 +8,9 @@ import android.content.IntentFilter;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
+import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -47,25 +49,25 @@ class NFC {
 
 
     // Read content from the card
-    void readTextFromMessage(NdefMessage ndefMessage, ProgressBar progressBar) {
+    void readTextFromMessage(NdefMessage ndefMessage, ProgressBar progressBar, View view) {
         this.content = null;
         NdefRecord[] ndefRecords = ndefMessage.getRecords();
         if(ndefRecords != null && ndefRecords.length > 0) {
             NdefRecord ndefRecord = ndefRecords[0];
             String tagContent = getTextFromNdefRecord(ndefRecord);
-            sendToken(tagContent, progressBar);
+            sendToken(tagContent, progressBar, view);
         }else{
             Toast.makeText(this.context, "No Ndef records found", Toast.LENGTH_LONG).show();
         }
     }
 
-    void readTextFromMessage(NdefMessage ndefMessage, String key) {
+    void readTextFromMessage(NdefMessage ndefMessage, String key, View view) {
         this.content = null;
         NdefRecord[] ndefRecords = ndefMessage.getRecords();
         if(ndefRecords != null && ndefRecords.length > 0) {
             NdefRecord ndefRecord = ndefRecords[0];
             String tagContent = getTextFromNdefRecord(ndefRecord);
-            sendToken(tagContent, key);
+            sendToken(tagContent, key, view);
         }else{
             Toast.makeText(this.context, "No Ndef records found", Toast.LENGTH_LONG).show();
         }
@@ -87,22 +89,25 @@ class NFC {
 
 
     // Send the token (and the key) to the server
-    private void sendToken(String token, ProgressBar progressBar) {
+    private void sendToken(String token, ProgressBar progressBar, View view) {
         if (!token.equals("")) {
             String url = "http://192.168.43.111/ktm/token_receive.php";
-            TokenSender tokenSender = new TokenSender(this.context, url, token, progressBar);
+            TokenSender tokenSender = new TokenSender(this.context, url, token, progressBar, view);
             tokenSender.execute();
         }else{
-            Toast.makeText(this.context, "Data KTM tidak lengkap", Toast.LENGTH_SHORT).show();
+            Snackbar.make(view, "Data tidak valid. Pastikan KTM yang Anda gunakan" +
+                    " adalah KTM Universitas X", Snackbar.LENGTH_LONG).show();
         }
     }
 
-    private void sendToken(String token, String key) {
+    private void sendToken(String token, String key, View view) {
         if (!token.equals("") && !key.equals("")) {
             String url = "http://192.168.43.111/ktm/receive.php";
-            Sender sender = new Sender(this.context, url, token, key);
+            Sender sender = new Sender(this.context, url, token, key, view);
             sender.execute();
         } else {
+            Snackbar.make(view, "Data tidak valid. Pastikan KTM yang Anda gunakan" +
+                    " adalah KTM Universitas X", Snackbar.LENGTH_LONG).show();
             Toast.makeText(this.context, "Data KTM tidak lengkap", Toast.LENGTH_SHORT).show();
         }
     }

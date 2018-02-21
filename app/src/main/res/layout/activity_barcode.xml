@@ -45,11 +45,14 @@
         android:layout_width="151dp"
         android:layout_height="47dp"
         android:layout_marginTop="40dp"
+        android:clickable="true"
         android:background="@drawable/button_background"
+        android:foreground="?attr/selectableItemBackground"
         android:onClick="onScanButtonClicked"
         android:text="SCAN"
         android:textColor="#FFFFFF"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:focusable="true" />
 
     <TextView
         android:id="@+id/stepText"

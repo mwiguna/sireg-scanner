@@ -3,6 +3,8 @@ package id.ac.unja.si.ktmscanner;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.design.widget.Snackbar;
+import android.view.View;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -22,12 +24,14 @@ public class Sender extends AsyncTask<Void,Void,String> {
     @SuppressLint("StaticFieldLeak")
     private Context c;
     private String urlAddress, token, key;
+    private View view;
 
-    Sender(Context c, String urlAddress, String... strings) {
+    Sender(Context c, String urlAddress, String token, String key, View view) {
         this.c = c;
         this.urlAddress = urlAddress;
-        this.token = strings[0];
-        this.key = strings[1];
+        this.token = token;
+        this.key = key;
+        this.view = view;
     }
 
     @Override
@@ -45,7 +49,8 @@ public class Sender extends AsyncTask<Void,Void,String> {
         super.onPostExecute(response);
 
         if(response != null) Toast.makeText(c,"Data berhasil masuk" ,Toast.LENGTH_SHORT).show();
-        else Toast.makeText(c,"Gagal",Toast.LENGTH_SHORT).show();
+        else Snackbar.make(view, "Gagal mengirim data. Pastikan koneksi internet" +
+                " Anda aktif.", Snackbar.LENGTH_LONG).show();
     }
 
     private String send() {
