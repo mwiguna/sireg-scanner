@@ -2,10 +2,15 @@ package id.ac.unja.si.ktmscanner;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.ProgressBar;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -16,27 +21,30 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 
 /**
- * Created by norman on 2/18/18.
+ * Created by norman on 2/19/18.
  */
 
-public class Sender extends AsyncTask<Void,Void,String> {
-
+public class RegSender extends AsyncTask<Void,Void,String> {
     @SuppressLint("StaticFieldLeak")
     private Context c;
-    private String urlAddress, token, key;
+    private String urlAddress, token;
+    @SuppressLint("StaticFieldLeak")
+    private ProgressBar homeLoading;
+    @SuppressLint("StaticFieldLeak")
     private View view;
 
-    Sender(Context c, String urlAddress, String token, String key, View view) {
+    RegSender(Context c, String urlAddress, String token, ProgressBar homeLoading, View view) {
         this.c = c;
         this.urlAddress = urlAddress;
         this.token = token;
-        this.key = key;
+        this.homeLoading = homeLoading;
         this.view = view;
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+        homeLoading.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -48,9 +56,31 @@ public class Sender extends AsyncTask<Void,Void,String> {
     protected void onPostExecute(String response) {
         super.onPostExecute(response);
 
-        if(response != null) Toast.makeText(c,"Data berhasil masuk" ,Toast.LENGTH_SHORT).show();
-        else Snackbar.make(view, "Gagal mengirim data. Pastikan koneksi internet" +
+        homeLoading.setVisibility(View.INVISIBLE);
+        if(response == null) Snackbar.make(view, "Gagal memvalidasi KTM. Pastikan koneksi internet" +
                 " Anda aktif.", Snackbar.LENGTH_LONG).show();
+        else {
+            String res = "";
+            try {
+                JSONObject jObj = new JSONObject(response);
+                res = jObj.getString("msg");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            switch (res) {
+                case "1":
+                    Intent intent = new Intent(this.c, ActBarcode.class);
+                    this.c.startActivity(intent);
+                    break;
+                case "404":
+                    Snackbar.make(view, "Tidak dapat menemukan penganggung jawab organisasi.", Snackbar.LENGTH_LONG).show();
+                    break;
+                default:
+                    Snackbar.make(view, "Terjadi kesalahan. Coba beberapa saat lagi.", Snackbar.LENGTH_LONG).show();
+                    break;
+            }
+        }
     }
 
     private String send() {
@@ -62,7 +92,7 @@ public class Sender extends AsyncTask<Void,Void,String> {
         try {
             OutputStream os=con.getOutputStream();
             BufferedWriter bw=new BufferedWriter(new OutputStreamWriter(os,"UTF-8"));
-            bw.write(new DataPackager(token, key).packData());
+            bw.write(new RegDataPackager(token).packData());
             bw.flush();
             bw.close();
             os.close();
@@ -87,7 +117,4 @@ public class Sender extends AsyncTask<Void,Void,String> {
         return null;
     }
 
-
 }
-
-

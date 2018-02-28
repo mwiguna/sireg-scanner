@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Resources;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
@@ -91,20 +92,20 @@ class NFC {
     // Send the token (and the key) to the server
     private void sendToken(String token, ProgressBar progressBar, View view) {
         if (!token.equals("")) {
-            String url = "http://192.168.43.111/ktm/token_receive.php";
-            TokenSender tokenSender = new TokenSender(this.context, url, token, progressBar, view);
-            tokenSender.execute();
+            String url = "http://192.168.12.1/Project/Kuliah/PPSI/Sireg/verifikasi_registrasi";
+            RegSender regSender = new RegSender(this.context, url, token, progressBar, view);
+            regSender.execute();
         }else{
             Snackbar.make(view, "Data tidak valid. Pastikan KTM yang Anda gunakan" +
                     " adalah KTM Universitas X", Snackbar.LENGTH_LONG).show();
         }
     }
 
-    private void sendToken(String token, String key, View view) {
-        if (!token.equals("") && !key.equals("")) {
-            String url = "http://192.168.43.111/ktm/receive.php";
-            Sender sender = new Sender(this.context, url, token, key, view);
-            sender.execute();
+    private void sendToken(String nim, String key, View view) {
+        if (!nim.equals("") && !key.equals("")) {
+            String url = "http://192.168.12.1/Project/Kuliah/PPSI/Sireg/new_member";
+            StudentSender studentSender = new StudentSender(this.context, url, nim, key, view);
+            studentSender.execute();
         } else {
             Snackbar.make(view, "Data tidak valid. Pastikan KTM yang Anda gunakan" +
                     " adalah KTM Universitas X", Snackbar.LENGTH_LONG).show();

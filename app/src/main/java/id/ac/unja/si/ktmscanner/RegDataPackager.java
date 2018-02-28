@@ -11,11 +11,11 @@ import java.util.Iterator;
  * Created by norman on 2/19/18.
  */
 
-public class TokenDataPackager {
+class RegDataPackager {
 
     private String token;
 
-    TokenDataPackager(String token) {
+    RegDataPackager(String token) {
         this.token = token;
     }
 

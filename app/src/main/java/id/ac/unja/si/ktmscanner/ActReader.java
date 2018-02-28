@@ -1,5 +1,6 @@
 package id.ac.unja.si.ktmscanner;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,8 +9,10 @@ import android.nfc.NfcAdapter;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -21,14 +24,29 @@ import java.io.InputStreamReader;
 
 public class ActReader extends AppCompatActivity {
     NFC nfc = new NFC();
+    TextView readerMsg;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reader);
 
+        readerMsg = findViewById(R.id.readerMsg);
         nfc.getAdapter(this);
         if (!nfc.checkNFCAvailability()) showNoNFCAlert();
+
+        Intent intent = getIntent();
+        if (intent.hasExtra("EVENT_TITLE")) {
+            Bundle bundle = intent.getExtras();
+
+            if (bundle != null) {
+                String eventTitle = bundle.getString("EVENT_TITLE");
+                assert eventTitle != null;
+                readerMsg.setText("TAP KTM DI BELAKANG PERANGKAT UNTUK MENDAFTAR " + eventTitle.toUpperCase());
+            }
+
+        }
     }
 
     private void showNoNFCAlert() {
@@ -92,8 +110,8 @@ public class ActReader extends AppCompatActivity {
         if (file.exists()) file.delete();
     }
 
-    private void goToHomeActivity() {
-        Intent intent = new Intent(this, ActHome.class);
+    private void goToBarcodeActivity() {
+        Intent intent = new Intent(this, ActBarcode.class);
         startActivity(intent);
         this.finish();
     }
@@ -122,8 +140,21 @@ public class ActReader extends AppCompatActivity {
 
         if (id == R.id.remove) {
             deleteKey();
-            goToHomeActivity();
+            goToBarcodeActivity();
+        }else if(id == R.id.exit) {
+            moveTaskToBack(true);
+            android.os.Process.killProcess(android.os.Process.myPid());
+            System.exit(1);
         }
         return super.onOptionsItemSelected(item);
     }
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+            this.moveTaskToBack(true);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
 }

@@ -8,14 +8,13 @@ import java.net.URLEncoder;
 import java.util.Iterator;
 
 /**
- * Created by norman on 2/18/18.
+ * Created by norman on 2/28/18.
  */
 
-class DataPackager {
-    private String token, key;
+public class BarcodeDataPackager {
+    private String key;
 
-    DataPackager(String token, String key) {
-        this.token = token;
+    BarcodeDataPackager(String key) {
         this.key = key;
     }
 
@@ -24,8 +23,7 @@ class DataPackager {
         StringBuilder packedData=new StringBuilder();
 
         try {
-            jo.put("token",token);
-            jo.put("key",key);
+            jo.put("key", key);
 
             Boolean firstValue = true;
             Iterator it = jo.keys();
@@ -51,5 +49,4 @@ class DataPackager {
 
         return null;
     }
-
 }

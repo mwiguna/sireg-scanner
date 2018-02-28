@@ -6,8 +6,12 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
 import android.view.View;
-import android.widget.ProgressBar;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -18,30 +22,28 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 
 /**
- * Created by norman on 2/19/18.
+ * Created by norman on 2/18/18.
  */
 
-public class TokenSender extends AsyncTask<Void,Void,String> {
+public class StudentSender extends AsyncTask<Void,Void,String> {
+
     @SuppressLint("StaticFieldLeak")
     private Context c;
-    private String urlAddress, token;
-    @SuppressLint("StaticFieldLeak")
-    private ProgressBar homeLoading;
+    private String urlAddress, nim, key;
     @SuppressLint("StaticFieldLeak")
     private View view;
 
-    TokenSender(Context c, String urlAddress, String token, ProgressBar homeLoading, View view) {
+    StudentSender(Context c, String urlAddress, String nim, String key, View view) {
         this.c = c;
         this.urlAddress = urlAddress;
-        this.token = token;
-        this.homeLoading = homeLoading;
+        this.nim = nim;
+        this.key = key;
         this.view = view;
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        homeLoading.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -49,16 +51,38 @@ public class TokenSender extends AsyncTask<Void,Void,String> {
         return this.send();
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onPostExecute(String response) {
         super.onPostExecute(response);
 
-        homeLoading.setVisibility(View.INVISIBLE);
-        if(response == null) Snackbar.make(view, "Gagal memvalidasi KTM. Pastikan koneksi internet" +
-                " Anda aktif.", Snackbar.LENGTH_LONG).show();
+        if(response == null) Toast.makeText(c,"GAGAL!!!!" ,Toast.LENGTH_SHORT).show();
         else {
-            Intent intent = new Intent(this.c, ActBarcode.class);
-            this.c.startActivity(intent);
+            String res = "";
+            try {
+                JSONObject jObj = new JSONObject(response);
+                res = jObj.getString("msg");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            switch (res) {
+                case "1":
+                    WebView webView = new  WebView(this.c);
+                    webView.setVisibility(View.GONE);
+                    webView.getSettings().setJavaScriptEnabled(true);
+                    webView.loadUrl("http://192.168.12.1/Project/Kuliah/PPSI/Sireg/realtime/" + this.nim + "/" + this.key);
+                    Toast.makeText(c,"Berhasil terdaftar." ,Toast.LENGTH_SHORT).show();
+                    break;
+                case "404":
+                    Toast.makeText(c,"KTM tidak dikenali atau event tidak tersedia" ,Toast.LENGTH_SHORT).show();
+                    break;
+                case "2":
+                    Toast.makeText(c,"Mahasiswa sudah pernah terdaftar" ,Toast.LENGTH_SHORT).show();
+                default:
+                    Toast.makeText(c,"GAGAL!!!!" ,Toast.LENGTH_SHORT).show();
+                    break;
+            }
         }
     }
 
@@ -71,7 +95,7 @@ public class TokenSender extends AsyncTask<Void,Void,String> {
         try {
             OutputStream os=con.getOutputStream();
             BufferedWriter bw=new BufferedWriter(new OutputStreamWriter(os,"UTF-8"));
-            bw.write(new TokenDataPackager(token).packData());
+            bw.write(new StudentDataPackager(nim, key).packData());
             bw.flush();
             bw.close();
             os.close();
@@ -96,4 +120,7 @@ public class TokenSender extends AsyncTask<Void,Void,String> {
         return null;
     }
 
+
 }
+
+
