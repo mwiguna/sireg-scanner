@@ -5,14 +5,12 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.res.Resources;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.io.UnsupportedEncodingException;
@@ -24,7 +22,6 @@ import java.io.UnsupportedEncodingException;
 class NFC {
     private NfcAdapter nfcAdapter;
     private Context context;
-    private String content;
 
     void getAdapter(Context context) {
         this.context = context;
@@ -50,20 +47,18 @@ class NFC {
 
 
     // Read content from the card
-    void readTextFromMessage(NdefMessage ndefMessage, ProgressBar progressBar, View view) {
-        this.content = null;
+    void readTextFromMessage(NdefMessage ndefMessage, View view) {
         NdefRecord[] ndefRecords = ndefMessage.getRecords();
         if(ndefRecords != null && ndefRecords.length > 0) {
             NdefRecord ndefRecord = ndefRecords[0];
             String tagContent = getTextFromNdefRecord(ndefRecord);
-            sendToken(tagContent, progressBar, view);
+            sendToken(tagContent, view);
         }else{
             Toast.makeText(this.context, "No Ndef records found", Toast.LENGTH_LONG).show();
         }
     }
 
     void readTextFromMessage(NdefMessage ndefMessage, String key, View view) {
-        this.content = null;
         NdefRecord[] ndefRecords = ndefMessage.getRecords();
         if(ndefRecords != null && ndefRecords.length > 0) {
             NdefRecord ndefRecord = ndefRecords[0];
@@ -90,11 +85,11 @@ class NFC {
 
 
     // Send the token (and the key) to the server
-    private void sendToken(String token, ProgressBar progressBar, View view) {
+    private void sendToken(String token, View view) {
         if (!token.equals("")) {
             String url = "http://192.168.12.1/Project/Kuliah/PPSI/Sireg/verifikasi_registrasi";
-            RegSender regSender = new RegSender(this.context, url, token, progressBar, view);
-            regSender.execute();
+            SenderReg senderReg = new SenderReg(this.context, url, token, view);
+            senderReg.execute();
         }else{
             Snackbar.make(view, "Data tidak valid. Pastikan KTM yang Anda gunakan" +
                     " adalah KTM Universitas X", Snackbar.LENGTH_LONG).show();
@@ -104,8 +99,8 @@ class NFC {
     private void sendToken(String nim, String key, View view) {
         if (!nim.equals("") && !key.equals("")) {
             String url = "http://192.168.12.1/Project/Kuliah/PPSI/Sireg/new_member";
-            StudentSender studentSender = new StudentSender(this.context, url, nim, key, view);
-            studentSender.execute();
+            SenderStudent senderStudent = new SenderStudent(this.context, url, nim, key);
+            senderStudent.execute();
         } else {
             Snackbar.make(view, "Data tidak valid. Pastikan KTM yang Anda gunakan" +
                     " adalah KTM Universitas X", Snackbar.LENGTH_LONG).show();

@@ -8,15 +8,15 @@ import java.net.URLEncoder;
 import java.util.Iterator;
 
 /**
- * Created by norman on 2/19/18.
+ * Created by norman on 2/18/18.
  */
 
-class RegDataPackager {
+class DataPackagerStudent {
+    private String nim, key;
 
-    private String token;
-
-    RegDataPackager(String token) {
-        this.token = token;
+    DataPackagerStudent(String nim, String key) {
+        this.nim = nim;
+        this.key = key;
     }
 
     String packData() {
@@ -24,7 +24,8 @@ class RegDataPackager {
         StringBuilder packedData=new StringBuilder();
 
         try {
-            jo.put("token",token);
+            jo.put("nim", nim);
+            jo.put("key",key);
 
             Boolean firstValue = true;
             Iterator it = jo.keys();
@@ -50,4 +51,5 @@ class RegDataPackager {
 
         return null;
     }
+
 }

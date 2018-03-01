@@ -4,13 +4,14 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-public class ActBarcode extends AppCompatActivity {
+public class ActivityBarcode extends AppCompatActivity {
     TextView welcomeText, instruction, stepText;
     Typeface helvetica;
 
@@ -36,7 +37,7 @@ public class ActBarcode extends AppCompatActivity {
         integrator.setCameraId(0);
         integrator.setBeepEnabled(false);
         integrator.setBarcodeImageEnabled(false);
-        integrator.setCaptureActivity(ActOrientation.class);
+        integrator.setCaptureActivity(ActivityOrientation.class);
         integrator.setOrientationLocked(false);
         integrator.initiateScan();
     }
@@ -47,7 +48,7 @@ public class ActBarcode extends AppCompatActivity {
      * @param key The string from qr code
      */
     private void sendKeyToBeValidated(String key) {
-        Intent intent = new Intent(this, ActValidation.class);
+        Intent intent = new Intent(this, ActivityValidation.class);
         intent.putExtra("KEY",key);
         startActivity(intent);
         this.finish();
@@ -64,6 +65,15 @@ public class ActBarcode extends AppCompatActivity {
         }else{
             super.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+            moveTaskToBack(true);
+            android.os.Process.killProcess(android.os.Process.myPid());
+            System.exit(1);
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
 }

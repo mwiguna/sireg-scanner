@@ -1,13 +1,12 @@
 package id.ac.unja.si.ktmscanner;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
-import android.util.Log;
 import android.view.View;
-import android.widget.ProgressBar;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,27 +23,27 @@ import java.net.HttpURLConnection;
  * Created by norman on 2/19/18.
  */
 
-public class RegSender extends AsyncTask<Void,Void,String> {
+public class SenderReg extends AsyncTask<Void,Void,String> {
     @SuppressLint("StaticFieldLeak")
     private Context c;
     private String urlAddress, token;
     @SuppressLint("StaticFieldLeak")
-    private ProgressBar homeLoading;
-    @SuppressLint("StaticFieldLeak")
     private View view;
+    private ProgressDialog progressDialog;
 
-    RegSender(Context c, String urlAddress, String token, ProgressBar homeLoading, View view) {
+    SenderReg(Context c, String urlAddress, String token, View view) {
         this.c = c;
         this.urlAddress = urlAddress;
         this.token = token;
-        this.homeLoading = homeLoading;
         this.view = view;
+        progressDialog = new ProgressDialog(this.c);
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        homeLoading.setVisibility(View.VISIBLE);
+        progressDialog.setMessage("Memvalidasi KTM. Harap tunggu...");
+        progressDialog.show();
     }
 
     @Override
@@ -56,9 +55,9 @@ public class RegSender extends AsyncTask<Void,Void,String> {
     protected void onPostExecute(String response) {
         super.onPostExecute(response);
 
-        homeLoading.setVisibility(View.INVISIBLE);
-        if(response == null) Snackbar.make(view, "Gagal memvalidasi KTM. Pastikan koneksi internet" +
-                " Anda aktif.", Snackbar.LENGTH_LONG).show();
+        progressDialog.dismiss();
+        if(response == null) Snackbar.make(view, "Gagal mengirim data. Pastikan koneksi internet" +
+                " Anda aktif", Snackbar.LENGTH_LONG).show();
         else {
             String res = "";
             try {
@@ -70,14 +69,16 @@ public class RegSender extends AsyncTask<Void,Void,String> {
 
             switch (res) {
                 case "1":
-                    Intent intent = new Intent(this.c, ActBarcode.class);
+                    Intent intent = new Intent(this.c, ActivityBarcode.class);
                     this.c.startActivity(intent);
                     break;
                 case "404":
-                    Snackbar.make(view, "Tidak dapat menemukan penganggung jawab organisasi.", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(view, "Tidak dapat menemukan penganggung jawab organisasi.",
+                            Snackbar.LENGTH_LONG).show();
                     break;
                 default:
-                    Snackbar.make(view, "Terjadi kesalahan. Coba beberapa saat lagi.", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(view, "Terjadi kesalahan. Coba beberapa saat lagi.",
+                            Snackbar.LENGTH_LONG).show();
                     break;
             }
         }
@@ -92,7 +93,7 @@ public class RegSender extends AsyncTask<Void,Void,String> {
         try {
             OutputStream os=con.getOutputStream();
             BufferedWriter bw=new BufferedWriter(new OutputStreamWriter(os,"UTF-8"));
-            bw.write(new RegDataPackager(token).packData());
+            bw.write(new DataPackagerReg(token).packData());
             bw.flush();
             bw.close();
             os.close();

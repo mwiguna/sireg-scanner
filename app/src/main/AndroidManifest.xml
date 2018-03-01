@@ -15,26 +15,27 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".ActValidation">
+        <activity android:name=".ActivityValidation"></activity>
+
+        <activity
+            android:name=".ActivityHome"
+            android:theme="@style/AppTheme.NoActionBar.FullScreen">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
 
         <activity
-            android:name=".ActHome"
-            android:theme="@style/AppTheme.NoActionBar.FullScreen">
-        </activity>
-
-        <activity
-            android:name=".ActBarcode"
+            android:name=".ActivityBarcode"
             android:theme="@style/AppTheme.NoActionBar.FullScreen" >
         </activity>
 
-        <activity android:name=".ActReader" />
+        <activity android:name=".ActivityReader" />
 
-        <activity android:name=".ActOrientation"
+        <activity android:name=".ActivityOrientation"
             android:screenOrientation="fullSensor"
             android:stateNotNeeded="true"
             android:theme="@style/zxing_CaptureTheme"

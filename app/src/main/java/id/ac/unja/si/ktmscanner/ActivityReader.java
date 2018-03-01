@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,7 +23,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class ActReader extends AppCompatActivity {
+public class ActivityReader extends AppCompatActivity {
     NFC nfc = new NFC();
     TextView readerMsg;
 
@@ -31,6 +32,8 @@ public class ActReader extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reader);
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         readerMsg = findViewById(R.id.readerMsg);
         nfc.getAdapter(this);
@@ -111,7 +114,7 @@ public class ActReader extends AppCompatActivity {
     }
 
     private void goToBarcodeActivity() {
-        Intent intent = new Intent(this, ActBarcode.class);
+        Intent intent = new Intent(this, ActivityBarcode.class);
         startActivity(intent);
         this.finish();
     }

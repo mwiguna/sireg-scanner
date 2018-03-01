@@ -1,7 +1,6 @@
 package id.ac.unja.si.ktmscanner;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
@@ -13,12 +12,10 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 
-public class ActValidation extends AppCompatActivity {
+public class ActivityValidation extends AppCompatActivity {
     Handler handler;
     private ProgressBar progressBar;
 
@@ -44,9 +41,23 @@ public class ActValidation extends AppCompatActivity {
                     validateKey(key);
                 }
 
-            } else goToHomeActivity();
+            } else keyNotExists();
         }
 
+    }
+
+    private void keyNotExists() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle("Terjadi kesalahan");
+        alert.setMessage("Key tidak tersedia. Mohon isi form pendaftaran pada website terlebih" +
+                " dahulu");
+        alert.setCancelable(false);
+        alert.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface d, int i) {
+                goToBarcodeActivity();
+            }
+        });
+        alert.show();
     }
 
 
@@ -60,14 +71,14 @@ public class ActValidation extends AppCompatActivity {
     private void validateKey(String key) {
         if(!key.equals("")) {
             String url = "http://192.168.12.1/Project/Kuliah/PPSI/Sireg/verifikasi_key";
-            BarcodeSender barcodeSender = new BarcodeSender(this, progressBar, url, key);
-            barcodeSender.execute();
+            SenderBarcode senderBarcode = new SenderBarcode(this, progressBar, url, key);
+            senderBarcode.execute();
         }
     }
 
     // REDIRECT METHODS //
-    private void goToHomeActivity() {
-        Intent intent = new Intent(this, ActHome.class);
+    private void goToBarcodeActivity() {
+        Intent intent = new Intent(this, ActivityBarcode.class);
         startActivity(intent);
         this.finish();
     }

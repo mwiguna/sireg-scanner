@@ -7,7 +7,7 @@
     android:background="@drawable/home"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context="id.ac.unja.si.ktmscanner.ActBarcode">
+    tools:context="id.ac.unja.si.ktmscanner.ActivityBarcode">
 
     <TextView
         android:id="@+id/welcomeText"

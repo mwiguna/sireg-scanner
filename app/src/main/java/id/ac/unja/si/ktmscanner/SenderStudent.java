@@ -1,21 +1,17 @@
 package id.ac.unja.si.ktmscanner;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.view.View;
-import android.widget.ProgressBar;
+import android.webkit.WebView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -23,21 +19,19 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 
 /**
- * Created by norman on 2/28/18.
+ * Created by norman on 2/18/18.
  */
 
-public class BarcodeSender extends AsyncTask<Void,Void,String> {
+public class SenderStudent extends AsyncTask<Void,Void,String> {
 
     @SuppressLint("StaticFieldLeak")
     private Context c;
-    private String urlAddress, key;
-    @SuppressLint("StaticFieldLeak")
-    private ProgressBar progressBar;
+    private String urlAddress, nim, key;
 
-    BarcodeSender(Context c, ProgressBar progressBar,  String urlAddress, String key) {
+    SenderStudent(Context c, String urlAddress, String nim, String key) {
         this.c = c;
-        this.progressBar = progressBar;
         this.urlAddress = urlAddress;
+        this.nim = nim;
         this.key = key;
     }
 
@@ -51,44 +45,43 @@ public class BarcodeSender extends AsyncTask<Void,Void,String> {
         return this.send();
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onPostExecute(String response) {
         super.onPostExecute(response);
 
-        if(response == null) {
-            validationFailed("Terjadi kesalahan.");
-        }
+        if(response == null) Toast.makeText(c,"Gagal mengirim data. Pastikan koneksi internet" +
+                " Anda aktif" ,Toast.LENGTH_SHORT).show();
         else {
-            progressBar.setVisibility(View.INVISIBLE);
             String res = "";
-            String eventTitle = "";
             try {
                 JSONObject jObj = new JSONObject(response);
                 res = jObj.getString("msg");
-                eventTitle = jObj.getString("title");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
             switch (res) {
                 case "1":
-                    setKey(this.key);
-                    Intent intent = new Intent(this.c, ActReader.class);
-                    intent.putExtra("EVENT_TITLE",eventTitle);
-                    this.c.startActivity(intent);
+                    WebView webView = new  WebView(this.c);
+                    webView.setVisibility(View.GONE);
+                    webView.getSettings().setJavaScriptEnabled(true);
+                    webView.loadUrl("http://192.168.12.1/Project/Kuliah/PPSI/Sireg/realtime/" + this.nim + "/" + this.key);
+                    Toast.makeText(c,"Berhasil terdaftar." ,Toast.LENGTH_SHORT).show();
                     break;
                 case "404":
-                    validationFailed("Registrasi tidak dapat ditemukan.");
-                    Log.e("barcode", "404");
+                    Toast.makeText(c,"KTM tidak dikenali atau event tidak tersedia",
+                            Toast.LENGTH_SHORT).show();
+                    break;
+                case "2":
+                    Toast.makeText(c,"Mahasiswa sudah pernah terdaftar", Toast.LENGTH_SHORT).show();
                     break;
                 default:
-                    validationFailed("Terjadi kesalahan");
-                    Log.e("barcode", "EERRRROR");
+                    Toast.makeText(c,"Gagal mengirim data" ,Toast.LENGTH_SHORT).show();
                     break;
             }
         }
     }
-
 
     private String send() {
 
@@ -99,7 +92,7 @@ public class BarcodeSender extends AsyncTask<Void,Void,String> {
         try {
             OutputStream os=con.getOutputStream();
             BufferedWriter bw=new BufferedWriter(new OutputStreamWriter(os,"UTF-8"));
-            bw.write(new BarcodeDataPackager(key).packData());
+            bw.write(new DataPackagerStudent(nim, key).packData());
             bw.flush();
             bw.close();
             os.close();
@@ -124,36 +117,6 @@ public class BarcodeSender extends AsyncTask<Void,Void,String> {
         return null;
     }
 
-    private void validationFailed(String msg) {
-        AlertDialog.Builder alert = new AlertDialog.Builder(this.c);
-        alert.setTitle("Terjadi kesalahan");
-        alert.setMessage(msg);
-        alert.setCancelable(false);
-        alert.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface d, int i) {
-                goToBarcodeActivity();
-            }
-        });
-        alert.show();
-    }
-
-
-    // Saves the key to the internal storage
-    private void setKey(String key) {
-        String filename = "key";
-        try {
-            FileOutputStream fos = this.c.openFileOutput(filename, Context.MODE_PRIVATE);
-            fos.write(key.getBytes());
-            fos.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    // REDIRECT METHODS //
-    private void goToBarcodeActivity() {
-        Intent intent = new Intent(this.c, ActBarcode.class);
-        this.c.startActivity(intent);
-    }
-
 }
+
+

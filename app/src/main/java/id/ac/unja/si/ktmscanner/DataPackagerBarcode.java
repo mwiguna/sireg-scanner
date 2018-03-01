@@ -11,10 +11,10 @@ import java.util.Iterator;
  * Created by norman on 2/28/18.
  */
 
-public class BarcodeDataPackager {
+public class DataPackagerBarcode {
     private String key;
 
-    BarcodeDataPackager(String key) {
+    DataPackagerBarcode(String key) {
         this.key = key;
     }
 
