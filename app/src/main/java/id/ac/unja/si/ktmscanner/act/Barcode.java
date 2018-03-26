@@ -1,4 +1,4 @@
-package id.ac.unja.si.ktmscanner;
+package id.ac.unja.si.ktmscanner.act;
 
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -11,7 +11,9 @@ import android.widget.TextView;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-public class ActivityBarcode extends AppCompatActivity {
+import id.ac.unja.si.ktmscanner.R;
+
+public class Barcode extends AppCompatActivity {
     TextView welcomeText, instruction, stepText;
     Typeface helvetica;
 
@@ -37,7 +39,7 @@ public class ActivityBarcode extends AppCompatActivity {
         integrator.setCameraId(0);
         integrator.setBeepEnabled(false);
         integrator.setBarcodeImageEnabled(false);
-        integrator.setCaptureActivity(ActivityOrientation.class);
+        integrator.setCaptureActivity(Orientation.class);
         integrator.setOrientationLocked(false);
         integrator.initiateScan();
     }
@@ -48,7 +50,7 @@ public class ActivityBarcode extends AppCompatActivity {
      * @param key The string from qr code
      */
     private void sendKeyToBeValidated(String key) {
-        Intent intent = new Intent(this, ActivityValidation.class);
+        Intent intent = new Intent(this, Validation.class);
         intent.putExtra("KEY",key);
         startActivity(intent);
         this.finish();

@@ -1,4 +1,4 @@
-package id.ac.unja.si.ktmscanner;
+package id.ac.unja.si.ktmscanner.http;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -8,14 +8,13 @@ import java.net.URLEncoder;
 import java.util.Iterator;
 
 /**
- * Created by norman on 2/18/18.
+ * Created by norman on 2/28/18.
  */
 
-class DataPackagerStudent {
-    private String nim, key;
+public class PackagerBarcode {
+    private String key;
 
-    DataPackagerStudent(String nim, String key) {
-        this.nim = nim;
+    PackagerBarcode(String key) {
         this.key = key;
     }
 
@@ -24,8 +23,7 @@ class DataPackagerStudent {
         StringBuilder packedData=new StringBuilder();
 
         try {
-            jo.put("nim", nim);
-            jo.put("key",key);
+            jo.put("key", key);
 
             Boolean firstValue = true;
             Iterator it = jo.keys();
@@ -51,5 +49,4 @@ class DataPackagerStudent {
 
         return null;
     }
-
 }

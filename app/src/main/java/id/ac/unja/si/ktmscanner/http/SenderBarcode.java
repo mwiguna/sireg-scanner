@@ -1,4 +1,4 @@
-package id.ac.unja.si.ktmscanner;
+package id.ac.unja.si.ktmscanner.http;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -21,6 +21,9 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 
+import id.ac.unja.si.ktmscanner.act.Barcode;
+import id.ac.unja.si.ktmscanner.act.Reader;
+
 /**
  * Created by norman on 2/28/18.
  */
@@ -33,7 +36,7 @@ public class SenderBarcode extends AsyncTask<Void,Void,String> {
     @SuppressLint("StaticFieldLeak")
     private ProgressBar progressBar;
 
-    SenderBarcode(Context c, ProgressBar progressBar, String urlAddress, String key) {
+    public SenderBarcode(Context c, ProgressBar progressBar, String urlAddress, String key) {
         this.c = c;
         this.progressBar = progressBar;
         this.urlAddress = urlAddress;
@@ -72,7 +75,7 @@ public class SenderBarcode extends AsyncTask<Void,Void,String> {
             switch (res) {
                 case "1":
                     setKey(this.key);
-                    Intent intent = new Intent(this.c, ActivityReader.class);
+                    Intent intent = new Intent(this.c, Reader.class);
                     intent.putExtra("EVENT_TITLE",eventTitle);
                     this.c.startActivity(intent);
                     break;
@@ -90,13 +93,13 @@ public class SenderBarcode extends AsyncTask<Void,Void,String> {
     private String send() {
 
         // Connect
-        HttpURLConnection con=Connector.connect(urlAddress);
+        HttpURLConnection con= HttpConnector.connect(urlAddress);
         if (con == null) return null;
 
         try {
             OutputStream os=con.getOutputStream();
             BufferedWriter bw=new BufferedWriter(new OutputStreamWriter(os,"UTF-8"));
-            bw.write(new DataPackagerBarcode(key).packData());
+            bw.write(new PackagerBarcode(key).packData());
             bw.flush();
             bw.close();
             os.close();
@@ -149,7 +152,7 @@ public class SenderBarcode extends AsyncTask<Void,Void,String> {
 
     // REDIRECT METHODS //
     private void goToBarcodeActivity() {
-        Intent intent = new Intent(this.c, ActivityBarcode.class);
+        Intent intent = new Intent(this.c, Barcode.class);
         this.c.startActivity(intent);
     }
 

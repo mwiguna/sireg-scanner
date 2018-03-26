@@ -8,7 +8,7 @@
     android:background="@drawable/home"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context="id.ac.unja.si.ktmscanner.ActivityHome">
+    tools:context="id.ac.unja.si.ktmscanner.act.Home">
 
     <TextView
         android:id="@+id/welcomeText"

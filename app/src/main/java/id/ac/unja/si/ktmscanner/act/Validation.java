@@ -1,4 +1,4 @@
-package id.ac.unja.si.ktmscanner;
+package id.ac.unja.si.ktmscanner.act;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -15,7 +15,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class ActivityValidation extends AppCompatActivity {
+import id.ac.unja.si.ktmscanner.R;
+import id.ac.unja.si.ktmscanner.http.SenderBarcode;
+import id.ac.unja.si.ktmscanner.http.Url;
+
+public class Validation extends AppCompatActivity {
     Handler handler;
     private ProgressBar progressBar;
 
@@ -70,7 +74,7 @@ public class ActivityValidation extends AppCompatActivity {
      */
     private void validateKey(String key) {
         if(!key.equals("")) {
-            String url = "http://192.168.12.1/Project/Kuliah/PPSI/Sireg/verifikasi_key";
+            String url = Url.KEY_VERIFICATION;
             SenderBarcode senderBarcode = new SenderBarcode(this, progressBar, url, key);
             senderBarcode.execute();
         }
@@ -78,7 +82,7 @@ public class ActivityValidation extends AppCompatActivity {
 
     // REDIRECT METHODS //
     private void goToBarcodeActivity() {
-        Intent intent = new Intent(this, ActivityBarcode.class);
+        Intent intent = new Intent(this, Barcode.class);
         startActivity(intent);
         this.finish();
     }

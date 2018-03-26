@@ -1,4 +1,4 @@
-package id.ac.unja.si.ktmscanner;
+package id.ac.unja.si.ktmscanner.act;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -13,8 +13,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-public class ActivityHome extends AppCompatActivity {
-    NFC nfc = new NFC();
+import id.ac.unja.si.ktmscanner.com.Nfc;
+import id.ac.unja.si.ktmscanner.R;
+
+public class Home extends AppCompatActivity {
+    Nfc nfc = new Nfc();
 
     TextView welcomeText, instruction, stepText;
     Typeface helvetica;
@@ -58,8 +61,8 @@ public class ActivityHome extends AppCompatActivity {
     private void showNoNFCAlert() {
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle("Terjadi kesalahan");
-        alert.setMessage("Jika perangkat Anda memiliki fitur NFC, mohon aktifkan" +
-                " di Connections -> NFC and payment");
+        alert.setMessage("Jika perangkat Anda memiliki fitur Nfc, mohon aktifkan" +
+                " di Connections -> Nfc and payment");
         alert.setNeutralButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface d, int i) {
                 finishAffinity();
@@ -69,7 +72,7 @@ public class ActivityHome extends AppCompatActivity {
     }
 
     public void onLoginClicked(View view) {
-        Intent intent = new Intent(this, ActivityValidation.class);
+        Intent intent = new Intent(this, Validation.class);
         startActivity(intent);
         this.finish();
     }

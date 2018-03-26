@@ -1,4 +1,4 @@
-package id.ac.unja.si.ktmscanner;
+package id.ac.unja.si.ktmscanner.act;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -23,8 +23,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class ActivityReader extends AppCompatActivity {
-    NFC nfc = new NFC();
+import id.ac.unja.si.ktmscanner.com.Nfc;
+import id.ac.unja.si.ktmscanner.R;
+
+public class Reader extends AppCompatActivity {
+    Nfc nfc = new Nfc();
     TextView readerMsg;
 
     @SuppressLint("SetTextI18n")
@@ -55,8 +58,8 @@ public class ActivityReader extends AppCompatActivity {
     private void showNoNFCAlert() {
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle("Terjadi kesalahan");
-        alert.setMessage("Jika perangkat Anda memiliki fitur NFC, mohon aktifkan" +
-                " di Connections -> NFC and payment");
+        alert.setMessage("Jika perangkat Anda memiliki fitur Nfc, mohon aktifkan" +
+                " di Connections -> Nfc and payment");
         alert.setNeutralButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface d, int i) {
                 finishAffinity();
@@ -114,7 +117,7 @@ public class ActivityReader extends AppCompatActivity {
     }
 
     private void goToBarcodeActivity() {
-        Intent intent = new Intent(this, ActivityBarcode.class);
+        Intent intent = new Intent(this, Barcode.class);
         startActivity(intent);
         this.finish();
     }

@@ -1,4 +1,4 @@
-package id.ac.unja.si.ktmscanner;
+package id.ac.unja.si.ktmscanner.http;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,11 +11,11 @@ import java.util.Iterator;
  * Created by norman on 2/19/18.
  */
 
-class DataPackagerReg {
+class PackagerRegistration {
 
     private String token;
 
-    DataPackagerReg(String token) {
+    PackagerRegistration(String token) {
         this.token = token;
     }
 

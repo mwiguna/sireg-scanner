@@ -1,4 +1,4 @@
-package id.ac.unja.si.ktmscanner;
+package id.ac.unja.si.ktmscanner.http;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -28,7 +28,7 @@ public class SenderStudent extends AsyncTask<Void,Void,String> {
     private Context c;
     private String urlAddress, nim, key;
 
-    SenderStudent(Context c, String urlAddress, String nim, String key) {
+    public SenderStudent(Context c, String urlAddress, String nim, String key) {
         this.c = c;
         this.urlAddress = urlAddress;
         this.nim = nim;
@@ -61,12 +61,12 @@ public class SenderStudent extends AsyncTask<Void,Void,String> {
                 e.printStackTrace();
             }
 
+            WebView webView = new  WebView(this.c);
             switch (res) {
                 case "1":
-                    WebView webView = new  WebView(this.c);
                     webView.setVisibility(View.GONE);
                     webView.getSettings().setJavaScriptEnabled(true);
-                    webView.loadUrl("http://192.168.12.1/Project/Kuliah/PPSI/Sireg/realtime/" + this.nim + "/" + this.key);
+                    webView.loadUrl(Url.REAL_TIME + this.nim + "/" + this.key);
                     Toast.makeText(c,"Berhasil terdaftar." ,Toast.LENGTH_SHORT).show();
                     break;
                 case "404":
@@ -74,6 +74,9 @@ public class SenderStudent extends AsyncTask<Void,Void,String> {
                             Toast.LENGTH_SHORT).show();
                     break;
                 case "2":
+                    webView.setVisibility(View.GONE);
+                    webView.getSettings().setJavaScriptEnabled(true);
+                    webView.loadUrl(Url.REAL_TIME + this.nim + "/" + this.key + "/1");
                     Toast.makeText(c,"Mahasiswa sudah pernah terdaftar", Toast.LENGTH_SHORT).show();
                     break;
                 default:
@@ -86,13 +89,13 @@ public class SenderStudent extends AsyncTask<Void,Void,String> {
     private String send() {
 
         // Connect
-        HttpURLConnection con=Connector.connect(urlAddress);
+        HttpURLConnection con= HttpConnector.connect(urlAddress);
         if (con == null) return null;
 
         try {
             OutputStream os=con.getOutputStream();
             BufferedWriter bw=new BufferedWriter(new OutputStreamWriter(os,"UTF-8"));
-            bw.write(new DataPackagerStudent(nim, key).packData());
+            bw.write(new PackagerStudent(nim, key).packData());
             bw.flush();
             bw.close();
             os.close();

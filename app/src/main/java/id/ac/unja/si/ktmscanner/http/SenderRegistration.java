@@ -1,4 +1,4 @@
-package id.ac.unja.si.ktmscanner;
+package id.ac.unja.si.ktmscanner.http;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
@@ -19,11 +19,13 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 
+import id.ac.unja.si.ktmscanner.act.Barcode;
+
 /**
  * Created by norman on 2/19/18.
  */
 
-public class SenderReg extends AsyncTask<Void,Void,String> {
+public class SenderRegistration extends AsyncTask<Void,Void,String> {
     @SuppressLint("StaticFieldLeak")
     private Context c;
     private String urlAddress, token;
@@ -31,7 +33,7 @@ public class SenderReg extends AsyncTask<Void,Void,String> {
     private View view;
     private ProgressDialog progressDialog;
 
-    SenderReg(Context c, String urlAddress, String token, View view) {
+    public SenderRegistration(Context c, String urlAddress, String token, View view) {
         this.c = c;
         this.urlAddress = urlAddress;
         this.token = token;
@@ -69,7 +71,7 @@ public class SenderReg extends AsyncTask<Void,Void,String> {
 
             switch (res) {
                 case "1":
-                    Intent intent = new Intent(this.c, ActivityBarcode.class);
+                    Intent intent = new Intent(this.c, Barcode.class);
                     this.c.startActivity(intent);
                     break;
                 case "404":
@@ -87,13 +89,13 @@ public class SenderReg extends AsyncTask<Void,Void,String> {
     private String send() {
 
         // Connect
-        HttpURLConnection con=Connector.connect(urlAddress);
+        HttpURLConnection con= HttpConnector.connect(urlAddress);
         if (con == null) return null;
 
         try {
             OutputStream os=con.getOutputStream();
             BufferedWriter bw=new BufferedWriter(new OutputStreamWriter(os,"UTF-8"));
-            bw.write(new DataPackagerReg(token).packData());
+            bw.write(new PackagerRegistration(token).packData());
             bw.flush();
             bw.close();
             os.close();

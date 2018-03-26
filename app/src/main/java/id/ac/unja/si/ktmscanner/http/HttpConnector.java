@@ -1,4 +1,4 @@
-package id.ac.unja.si.ktmscanner;
+package id.ac.unja.si.ktmscanner.http;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -8,7 +8,7 @@ import java.net.URL;
  * Created by norman on 2/18/18.
  */
 
-class Connector {
+class HttpConnector {
 
     static HttpURLConnection connect(String urlAddress) {
 

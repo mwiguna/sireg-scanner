@@ -1,4 +1,4 @@
-package id.ac.unja.si.ktmscanner;
+package id.ac.unja.si.ktmscanner.com;
 
 import android.app.Activity;
 import android.app.PendingIntent;
@@ -15,39 +15,43 @@ import android.widget.Toast;
 
 import java.io.UnsupportedEncodingException;
 
+import id.ac.unja.si.ktmscanner.http.SenderRegistration;
+import id.ac.unja.si.ktmscanner.http.SenderStudent;
+import id.ac.unja.si.ktmscanner.http.Url;
+
 /**
  * Created by norman on 2/20/18.
  */
 
-class NFC {
+public class Nfc {
     private NfcAdapter nfcAdapter;
     private Context context;
 
-    void getAdapter(Context context) {
+    public void getAdapter(Context context) {
         this.context = context;
         this.nfcAdapter = NfcAdapter.getDefaultAdapter(this.context);
     }
 
-    boolean checkNFCAvailability() {
+    public boolean checkNFCAvailability() {
         return !(this.nfcAdapter == null || !this.nfcAdapter.isEnabled());
     }
 
 
     // Listener
-    void enableFDS() {
+    public void enableFDS() {
         Intent intent = new Intent(this.context, this.context.getClass()).addFlags(Intent.FLAG_RECEIVER_REPLACE_PENDING);
         PendingIntent pendingIntent = PendingIntent.getActivity(this.context, 0, intent, 0);
         IntentFilter[] intentFilters = new IntentFilter[]{};
         this.nfcAdapter.enableForegroundDispatch((Activity) this.context, pendingIntent, intentFilters,null);
     }
 
-    void disableFDS() {
+    public void disableFDS() {
         this.nfcAdapter.disableForegroundDispatch((Activity) this.context);
     }
 
 
     // Read content from the card
-    void readTextFromMessage(NdefMessage ndefMessage, View view) {
+    public void readTextFromMessage(NdefMessage ndefMessage, View view) {
         NdefRecord[] ndefRecords = ndefMessage.getRecords();
         if(ndefRecords != null && ndefRecords.length > 0) {
             NdefRecord ndefRecord = ndefRecords[0];
@@ -58,7 +62,7 @@ class NFC {
         }
     }
 
-    void readTextFromMessage(NdefMessage ndefMessage, String key, View view) {
+    public void readTextFromMessage(NdefMessage ndefMessage, String key, View view) {
         NdefRecord[] ndefRecords = ndefMessage.getRecords();
         if(ndefRecords != null && ndefRecords.length > 0) {
             NdefRecord ndefRecord = ndefRecords[0];
@@ -87,9 +91,9 @@ class NFC {
     // Send the token (and the key) to the server
     private void sendToken(String token, View view) {
         if (!token.equals("")) {
-            String url = "http://192.168.12.1/Project/Kuliah/PPSI/Sireg/verifikasi_registrasi";
-            SenderReg senderReg = new SenderReg(this.context, url, token, view);
-            senderReg.execute();
+            String url = Url.REGISTRATION_VERIFICATION;
+            SenderRegistration senderRegistration = new SenderRegistration(this.context, url, token, view);
+            senderRegistration.execute();
         }else{
             Snackbar.make(view, "Data tidak valid. Pastikan KTM yang Anda gunakan" +
                     " adalah KTM Universitas X", Snackbar.LENGTH_LONG).show();
@@ -98,7 +102,7 @@ class NFC {
 
     private void sendToken(String nim, String key, View view) {
         if (!nim.equals("") && !key.equals("")) {
-            String url = "http://192.168.12.1/Project/Kuliah/PPSI/Sireg/new_member";
+            String url = Url.NEW_MEMBER;
             SenderStudent senderStudent = new SenderStudent(this.context, url, nim, key);
             senderStudent.execute();
         } else {
