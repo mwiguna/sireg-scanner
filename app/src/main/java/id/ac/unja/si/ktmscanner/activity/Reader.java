@@ -1,4 +1,4 @@
-package id.ac.unja.si.ktmscanner.act;
+package id.ac.unja.si.ktmscanner.activity;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -23,7 +23,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import id.ac.unja.si.ktmscanner.com.Nfc;
+import id.ac.unja.si.ktmscanner.common.Nfc;
 import id.ac.unja.si.ktmscanner.R;
 
 public class Reader extends AppCompatActivity {

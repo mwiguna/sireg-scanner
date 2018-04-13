@@ -18,6 +18,8 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 
+import id.ac.unja.si.ktmscanner.common.Url;
+
 /**
  * Created by norman on 2/18/18.
  */
@@ -66,7 +68,7 @@ public class SenderStudent extends AsyncTask<Void,Void,String> {
                 case "1":
                     webView.setVisibility(View.GONE);
                     webView.getSettings().setJavaScriptEnabled(true);
-                    webView.loadUrl(Url.REAL_TIME + this.nim + "/" + this.key);
+                    webView.loadUrl(Url.getRealTime() + this.nim + "/" + this.key);
                     Toast.makeText(c,"Berhasil terdaftar." ,Toast.LENGTH_SHORT).show();
                     break;
                 case "404":
@@ -76,7 +78,7 @@ public class SenderStudent extends AsyncTask<Void,Void,String> {
                 case "2":
                     webView.setVisibility(View.GONE);
                     webView.getSettings().setJavaScriptEnabled(true);
-                    webView.loadUrl(Url.REAL_TIME + this.nim + "/" + this.key + "/1");
+                    webView.loadUrl(Url.getRealTime() + this.nim + "/" + this.key + "/1");
                     Toast.makeText(c,"Mahasiswa sudah pernah terdaftar", Toast.LENGTH_SHORT).show();
                     break;
                 default:

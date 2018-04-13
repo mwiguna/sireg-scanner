@@ -19,7 +19,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 
-import id.ac.unja.si.ktmscanner.act.Barcode;
+import id.ac.unja.si.ktmscanner.activity.Barcode;
 
 /**
  * Created by norman on 2/19/18.

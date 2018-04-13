@@ -15,10 +15,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".act.Validation"></activity>
+        <activity android:name=".activity.Validation"></activity>
 
         <activity
-            android:name=".act.Home"
+            android:name=".activity.Home"
             android:theme="@style/AppTheme.NoActionBar.FullScreen">
 
             <intent-filter>
@@ -29,13 +29,13 @@
         </activity>
 
         <activity
-            android:name=".act.Barcode"
+            android:name=".activity.Barcode"
             android:theme="@style/AppTheme.NoActionBar.FullScreen" >
         </activity>
 
-        <activity android:name=".act.Reader" />
+        <activity android:name=".activity.Reader" />
 
-        <activity android:name=".act.Orientation"
+        <activity android:name=".activity.Orientation"
             android:screenOrientation="fullSensor"
             android:stateNotNeeded="true"
             android:theme="@style/zxing_CaptureTheme"

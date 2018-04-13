@@ -1,4 +1,4 @@
-package id.ac.unja.si.ktmscanner.com;
+package id.ac.unja.si.ktmscanner.common;
 
 import android.app.Activity;
 import android.app.PendingIntent;
@@ -17,7 +17,7 @@ import java.io.UnsupportedEncodingException;
 
 import id.ac.unja.si.ktmscanner.http.SenderRegistration;
 import id.ac.unja.si.ktmscanner.http.SenderStudent;
-import id.ac.unja.si.ktmscanner.http.Url;
+import id.ac.unja.si.ktmscanner.common.Url;
 
 /**
  * Created by norman on 2/20/18.
@@ -91,7 +91,7 @@ public class Nfc {
     // Send the token (and the key) to the server
     private void sendToken(String token, View view) {
         if (!token.equals("")) {
-            String url = Url.REGISTRATION_VERIFICATION;
+            String url = Url.getRegistrationVerification();
             SenderRegistration senderRegistration = new SenderRegistration(this.context, url, token, view);
             senderRegistration.execute();
         }else{
@@ -102,7 +102,7 @@ public class Nfc {
 
     private void sendToken(String nim, String key, View view) {
         if (!nim.equals("") && !key.equals("")) {
-            String url = Url.NEW_MEMBER;
+            String url = Url.getNewMember();
             SenderStudent senderStudent = new SenderStudent(this.context, url, nim, key);
             senderStudent.execute();
         } else {

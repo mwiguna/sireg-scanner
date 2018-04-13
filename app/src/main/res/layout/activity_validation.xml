@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="id.ac.unja.si.ktmscanner.act.Validation">
+    tools:context="id.ac.unja.si.ktmscanner.activity.Validation">
 
     <ProgressBar
         android:id="@+id/progressBar"

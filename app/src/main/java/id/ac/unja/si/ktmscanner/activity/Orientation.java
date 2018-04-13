@@ -1,4 +1,4 @@
-package id.ac.unja.si.ktmscanner.act;
+package id.ac.unja.si.ktmscanner.activity;
 
 import com.journeyapps.barcodescanner.CaptureActivity;
 

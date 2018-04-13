@@ -1,4 +1,4 @@
-package id.ac.unja.si.ktmscanner.act;
+package id.ac.unja.si.ktmscanner.activity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -13,7 +13,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import id.ac.unja.si.ktmscanner.com.Nfc;
+import id.ac.unja.si.ktmscanner.common.Nfc;
 import id.ac.unja.si.ktmscanner.R;
 
 public class Home extends AppCompatActivity {

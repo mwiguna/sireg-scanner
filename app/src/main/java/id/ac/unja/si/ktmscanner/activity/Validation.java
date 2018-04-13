@@ -1,4 +1,4 @@
-package id.ac.unja.si.ktmscanner.act;
+package id.ac.unja.si.ktmscanner.activity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -17,7 +17,7 @@ import java.io.InputStreamReader;
 
 import id.ac.unja.si.ktmscanner.R;
 import id.ac.unja.si.ktmscanner.http.SenderBarcode;
-import id.ac.unja.si.ktmscanner.http.Url;
+import id.ac.unja.si.ktmscanner.common.Url;
 
 public class Validation extends AppCompatActivity {
     Handler handler;
@@ -74,7 +74,7 @@ public class Validation extends AppCompatActivity {
      */
     private void validateKey(String key) {
         if(!key.equals("")) {
-            String url = Url.KEY_VERIFICATION;
+            String url = Url.getKeyVerification();
             SenderBarcode senderBarcode = new SenderBarcode(this, progressBar, url, key);
             senderBarcode.execute();
         }
