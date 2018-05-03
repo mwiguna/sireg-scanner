@@ -58,9 +58,13 @@ public class SenderRegistration extends AsyncTask<Void,Void,String> {
         super.onPostExecute(response);
 
         progressDialog.dismiss();
+        Snackbar.make(view, this.urlAddress,
+                Snackbar.LENGTH_LONG).show();
+
         if(response == null) Snackbar.make(view, "Gagal mengirim data. Pastikan koneksi internet" +
                 " Anda aktif", Snackbar.LENGTH_LONG).show();
         else {
+
             String res = "";
             try {
                 JSONObject jObj = new JSONObject(response);
@@ -68,6 +72,7 @@ public class SenderRegistration extends AsyncTask<Void,Void,String> {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+
 
             switch (res) {
                 case "1":

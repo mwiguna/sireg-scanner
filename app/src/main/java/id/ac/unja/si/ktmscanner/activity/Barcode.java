@@ -71,9 +71,10 @@ public class Barcode extends AppCompatActivity {
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if(keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-            moveTaskToBack(true);
-            android.os.Process.killProcess(android.os.Process.myPid());
-            System.exit(1);
+//            moveTaskToBack(true);
+//            android.os.Process.killProcess(android.os.Process.myPid());
+//            System.exit(1);
+            this.finishAffinity();
         }
         return super.onKeyDown(keyCode, event);
     }

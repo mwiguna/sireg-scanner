@@ -45,24 +45,24 @@ public class Validation extends AppCompatActivity {
                     validateKey(key);
                 }
 
-            } else keyNotExists();
+            } else goToBarcodeActivity();
         }
 
     }
 
-    private void keyNotExists() {
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle("Terjadi kesalahan");
-        alert.setMessage("Key tidak tersedia. Mohon isi form pendaftaran pada website terlebih" +
-                " dahulu");
-        alert.setCancelable(false);
-        alert.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface d, int i) {
-                goToBarcodeActivity();
-            }
-        });
-        alert.show();
-    }
+//    private void keyNotExists() {
+//        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+//        alert.setTitle("Terjadi kesalahan");
+//        alert.setMessage("Key tidak tersedia. Mohon isi form pendaftaran pada website terlebih" +
+//                " dahulu");
+//        alert.setCancelable(false);
+//        alert.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+//            public void onClick(DialogInterface d, int i) {
+//                goToBarcodeActivity();
+//            }
+//        });
+//        alert.show();
+//    }
 
 
     /**

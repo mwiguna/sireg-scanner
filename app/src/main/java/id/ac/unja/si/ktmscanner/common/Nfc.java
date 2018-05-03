@@ -17,7 +17,6 @@ import java.io.UnsupportedEncodingException;
 
 import id.ac.unja.si.ktmscanner.http.SenderRegistration;
 import id.ac.unja.si.ktmscanner.http.SenderStudent;
-import id.ac.unja.si.ktmscanner.common.Url;
 
 /**
  * Created by norman on 2/20/18.
@@ -32,8 +31,8 @@ public class Nfc {
         this.nfcAdapter = NfcAdapter.getDefaultAdapter(this.context);
     }
 
-    public boolean checkNFCAvailability() {
-        return !(this.nfcAdapter == null || !this.nfcAdapter.isEnabled());
+    public boolean notAvailable() {
+        return (this.nfcAdapter == null || !this.nfcAdapter.isEnabled());
     }
 
 

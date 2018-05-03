@@ -40,7 +40,7 @@ public class Reader extends AppCompatActivity {
 
         readerMsg = findViewById(R.id.readerMsg);
         nfc.getAdapter(this);
-        if (!nfc.checkNFCAvailability()) showNoNFCAlert();
+        if (nfc.notAvailable()) showNoNFCAlert();
 
         Intent intent = getIntent();
         if (intent.hasExtra("EVENT_TITLE")) {
@@ -148,9 +148,10 @@ public class Reader extends AppCompatActivity {
             deleteKey();
             goToBarcodeActivity();
         }else if(id == R.id.exit) {
-            moveTaskToBack(true);
-            android.os.Process.killProcess(android.os.Process.myPid());
-            System.exit(1);
+//            moveTaskToBack(true);
+//            android.os.Process.killProcess(android.os.Process.myPid());
+//            System.exit(1);
+            this.finishAffinity();
         }
         return super.onOptionsItemSelected(item);
     }

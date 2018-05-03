@@ -14,7 +14,7 @@
         android:id="@+id/welcomeText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="90dp"
+        android:layout_marginTop="70dp"
         android:text="Selamat Datang"
         android:textAlignment="center"
         android:textColor="#ffffff"
@@ -23,8 +23,8 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="148dp"
-        android:layout_height="151dp"
-        android:layout_marginTop="50dp"
+        android:layout_height="85dp"
+        android:layout_marginTop="30dp"
         app:srcCompat="@drawable/cardone" />
 
     <TextView
@@ -33,12 +33,25 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="30dp"
         android:lineSpacingExtra="10sp"
-        android:text="Untuk memulai pendaftaran, harap isi form pada website, lalu tap KTM Anda pada belakang perangkat ini"
+        android:text="Organisasi yang belum memiliki akun harap mengisi form pendaftaran pada website dan scan KTM di belakang perangkat ini untuk verifikasi."
         android:textAlignment="center"
         android:textColor="#ffffff"
-        android:textSize="18sp" />
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/instructionText2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:lineSpacingExtra="10sp"
+        android:text='Organisasi yang sudah memiliki akun dan mahasiswa yang ingin mendaftar dapat langsung menekan tombol "Mulai" di bawah ini.'
+        android:textAlignment="center"
+        android:textColor="#ffffff"
+        android:textSize="16sp" />
 
 
     <Button
@@ -51,7 +64,7 @@
         android:focusable="true"
         android:foreground="?attr/selectableItemBackground"
         android:onClick="onLoginClicked"
-        android:text="Sudah punya akun"
+        android:text="MULAI"
         android:textColor="#FFFFFF"
         android:textSize="16sp" />
 

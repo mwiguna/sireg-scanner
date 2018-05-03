@@ -81,6 +81,10 @@ public class SenderStudent extends AsyncTask<Void,Void,String> {
                     webView.loadUrl(Url.getRealTime() + this.nim + "/" + this.key + "/1");
                     Toast.makeText(c,"Mahasiswa sudah pernah terdaftar", Toast.LENGTH_SHORT).show();
                     break;
+                case "3":
+                    Toast.makeText(c,"Jumlah pendaftar telah mencapai batas.",
+                            Toast.LENGTH_SHORT).show();
+                    break;
                 default:
                     Toast.makeText(c,"Gagal mengirim data" ,Toast.LENGTH_SHORT).show();
                     break;

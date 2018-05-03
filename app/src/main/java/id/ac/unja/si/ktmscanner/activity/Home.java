@@ -19,7 +19,7 @@ import id.ac.unja.si.ktmscanner.R;
 public class Home extends AppCompatActivity {
     Nfc nfc = new Nfc();
 
-    TextView welcomeText, instruction, stepText;
+    TextView welcomeText, instruction, stepText, instruction2;
     Typeface helvetica;
 
     @Override
@@ -29,15 +29,18 @@ public class Home extends AppCompatActivity {
 
         welcomeText = findViewById(R.id.welcomeText);
         instruction = findViewById(R.id.instructionText);
+        instruction2 = findViewById(R.id.instructionText2);
         stepText = findViewById(R.id.stepText);
         helvetica = Typeface.createFromAsset(getAssets(), "fonts/helvetica.ttf");
 
         welcomeText.setTypeface(helvetica);
         instruction.setTypeface(helvetica);
+        instruction2.setTypeface(helvetica);
         stepText.setTypeface(helvetica);
 
         nfc.getAdapter(this);
-        if(!nfc.checkNFCAvailability()) showNoNFCAlert();
+
+        if(nfc.notAvailable()) showNoNFCAlert();
     }
 
 
